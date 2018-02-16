@@ -221,10 +221,7 @@ module ChefProvisioningVsphere
           'already created'
         )
       else
-        vm = clone_vm(
-          action_handler,
-          bootstrap_options,
-          machine_spec.name
+         raise "#{machine_spec.name}is not present in the vCenter. Aborting the node creation"
         )
       end
       vm
