@@ -892,6 +892,15 @@ module ChefProvisioningVsphere
         else
           ## Check if true available
           vm_ip = bootstrap_options[:customization_spec][:ipsettings][:ip] unless vm_helper.ip?
+          Chef::Log.info(
+            "Checking to see if ip is reachable #{vm_ip}..."
+          )
+          if vm_ip.is_a?(Array)
+            Chef::Log.info(
+              'Multiple IPs provided. So considering the external facing IP'
+            )
+            vm_ip = vm_ip[0].to_s
+          end
           nb_attempts = 0
           until @vm_helper.open_port?(vm_ip, @vm_helper.port, 1) || nb_attempts > bootstrap_options[:ready_timeout]
             print '.'
